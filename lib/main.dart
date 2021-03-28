@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:quizzler/quiz_brain.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 
 void main() => runApp(Quizzler());
 
@@ -45,7 +46,26 @@ class _QuizPageState extends State<QuizPage> {
         )));
       }
 
-      quizBrain.nextQuestion();
+      bool hasMoreQuestion = quizBrain.nextQuestion();
+      if (!hasMoreQuestion) {
+        showFinishedALert();
+        resetGame();
+      }
+    });
+  }
+
+  void showFinishedALert() {
+    Alert(
+      context: context,
+      title: 'Finished!',
+      desc: 'You\'ve reached the end of the quiz',
+    ).show();
+  }
+
+  void resetGame() {
+    setState(() {
+      scoreKeeper = [];
+      quizBrain.reset();
     });
   }
 
